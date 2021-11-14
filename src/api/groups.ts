@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const router = express.Router();
 
+// Create new group
 router.post(
     '/',
     async (req, res) => {
@@ -15,6 +16,7 @@ router.post(
     }
 )
 
+// Get all groups
 router.get(
     '/',
     async (req, res) => {
@@ -23,6 +25,7 @@ router.get(
     }
 )
 
+// Get group by id
 router.get(
     '/:id',
     async (req, res) => {
@@ -39,6 +42,7 @@ router.get(
     }
 )
 
+// Delete group by id
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -86,6 +90,7 @@ router.get('/:id/members', async (req, res) => {
     res.json(groupWithMembers);
 })
 
+// Delete a member within a group
 router.delete('/:id/members/:memberId', async (req, res) => {
     const { id, memberId } = req.params;
     const groupWithDeletedMembers = await prisma.group.update({
