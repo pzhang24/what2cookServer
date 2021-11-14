@@ -43,7 +43,7 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const groupDeleted = prisma.group.delete({ where: { id }});
+        const groupDeleted = await prisma.group.delete({ where: { id }});
         res.json({
             "group deleted": groupDeleted
         });
