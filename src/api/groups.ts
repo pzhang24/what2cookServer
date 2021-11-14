@@ -16,6 +16,14 @@ router.post(
 )
 
 router.get(
+    '/',
+    async (req, res) => {
+        const groups = await prisma.group.findMany({});
+        res.json(groups);
+    }
+)
+
+router.get(
     '/:id',
     async (req, res) => {
         const { id } = req.params;
