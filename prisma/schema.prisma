@@ -17,6 +17,7 @@ model Group {
 
 model Member {
   id   String @id @default(uuid())
+  name String
   diet String
   intolerances String
   excludeIngredients String

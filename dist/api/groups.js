@@ -13,6 +13,10 @@ router.post('/', async (req, res) => {
     });
     res.json(result);
 });
+router.get('/', async (req, res) => {
+    const groups = await prisma.group.findMany({});
+    res.json(groups);
+});
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const group = await prisma.group.findUnique({
@@ -28,7 +32,7 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const groupDeleted = prisma.group.delete({ where: { id } });
+        const groupDeleted = await prisma.group.delete({ where: { id } });
         res.json({
             "group deleted": groupDeleted
         });
