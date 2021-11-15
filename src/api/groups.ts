@@ -102,7 +102,7 @@ router.get('/:id/members', async (req, res) => {
 // Update a member within a group
 router.patch('/:id/members/:memberId', async (req, res) => {
     const { id, memberId } = req.params;
-    const { newMemberBody } = req.body;
+    const newMemberBody = req.body;
     try {
         await prisma.member.update({
             where: {
