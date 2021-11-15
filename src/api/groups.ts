@@ -71,8 +71,14 @@ router.post('/:id/members', async (req, res) => {
                     data: membersToAdd,
                 }
             }
+        },
+        include: {
+            members: true,
         }
     })
+    if (!updatedGroup) {
+        return res.status(404).json({ msg: 'Group not found' });
+    }
     res.json(updatedGroup);
 })
 
@@ -83,10 +89,13 @@ router.get('/:id/members', async (req, res) => {
         where: {
             id: id,
         },
-        select: {
+        include: {
             members: true,
         }
     });
+    if (!groupWithMembers) {
+        return res.status(404).json({ msg: 'Group not found' });
+    }
     res.json(groupWithMembers);
 })
 
@@ -101,8 +110,14 @@ router.delete('/:id/members/:memberId', async (req, res) => {
             members: {
                 deleteMany: { id: memberId },
             }
+        },
+        include: {
+            members: true,
         }
-    })
+    });
+    if (!groupWithDeletedMembers) {
+        return res.status(404).json({ msg: 'Group not found' });
+    }
     res.json(groupWithDeletedMembers);
 })
 
