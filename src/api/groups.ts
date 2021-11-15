@@ -99,6 +99,34 @@ router.get('/:id/members', async (req, res) => {
     res.json(groupWithMembers);
 })
 
+// Update a member within a group
+router.patch('/:id/members/:memberId', async (req, res) => {
+    const { id, memberId } = req.params;
+    const { newMemberBody } = req.body;
+    const groupWithUpdatedMember = await prisma.group.update({
+        where: {
+            id: id,
+        },
+        data: {
+            members: {
+                update: {
+                    where: {
+                        id: memberId
+                    },
+                    data: {...newMemberBody}
+                },
+            }
+        },
+        include: {
+            members: true,
+        }
+    });
+    if (!groupWithUpdatedMember) {
+        return res.status(404).json({ msg: 'Group not found' });
+    }
+    res.json(groupWithUpdatedMember);
+})
+
 // Delete a member within a group
 router.delete('/:id/members/:memberId', async (req, res) => {
     const { id, memberId } = req.params;
