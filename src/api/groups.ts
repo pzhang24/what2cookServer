@@ -103,19 +103,22 @@ router.get('/:id/members', async (req, res) => {
 router.patch('/:id/members/:memberId', async (req, res) => {
     const { id, memberId } = req.params;
     const { newMemberBody } = req.body;
-    const groupWithUpdatedMember = await prisma.group.update({
+    try {
+        await prisma.member.update({
+            where: {
+                id: memberId,
+            },
+            data: {
+                ...newMemberBody
+            }
+        })
+    } catch {
+        return res.status(404).json({ msg: 'Member not found' });
+    }
+
+    const groupWithUpdatedMember = await prisma.group.findUnique({
         where: {
             id: id,
-        },
-        data: {
-            members: {
-                update: {
-                    where: {
-                        id: memberId
-                    },
-                    data: {...newMemberBody}
-                },
-            }
         },
         include: {
             members: true,
